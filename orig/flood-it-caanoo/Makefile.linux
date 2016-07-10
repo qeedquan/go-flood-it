@@ -1,0 +1,17 @@
+TARGET = flood-it
+LIBS = `sdl-config --libs` -lSDL_ttf
+CXXFLAGS = -O3 `sdl-config --cflags`
+CXX = g++
+SRCDIR = ./src/
+
+
+all:
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)Board.cpp -o $(SRCDIR)Board.o
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)Globals.cpp -o $(SRCDIR)Globals.o
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)Game.cpp -o $(SRCDIR)Game.o
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)main.cpp -o $(SRCDIR)main.o
+	$(CXX) -o $(TARGET) $(SRCDIR)main.o $(SRCDIR)Game.o $(SRCDIR)Globals.o $(SRCDIR)Board.o $(LIBS)
+	strip $(TARGET)
+clean:
+	rm $(SRCDIR)*.o 
+	rm $(TARGET)

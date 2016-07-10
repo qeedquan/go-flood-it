@@ -1,0 +1,20 @@
+TARGET = flood-it
+SDKDIR = $(HOME)/dev/caanoo/GPH_SDK
+ARMDIR = $(SDKDIR)/tools/gcc-4.2.4-glibc-2.7-eabi
+LIBS = -L$(SDKDIR)/lib/target -L$(SDKDIR)/DGE/lib/target -L$(ARMDIR)/lib -L$(ARMDIR)/tools/gcc-4.2.4-glibc-2.7-eabi/arm-gph-linux-gnueabi/sys-root/lib -lSDL -lSDL_ttf
+INCS = -I$(SDKDIR)/include -I$(SDKDIR)/DGE/include -I$(SDKDIR)/DGE/include/SDL -I$(ARMDIR)/include/ -I$(ARMDIR)/include/SDL $(shell pkg-config --cflags sdl)
+CXXFLAGS = $(INCS) -DCAANOO
+CXX = arm-gph-linux-gnueabi-g++
+SRCDIR = ./src/
+
+
+all:
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)Board.cpp -o $(SRCDIR)Board.o
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)Globals.cpp -o $(SRCDIR)Globals.o
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)Game.cpp -o $(SRCDIR)Game.o
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)main.cpp -o $(SRCDIR)main.o
+	$(CXX) -o $(TARGET) $(SRCDIR)main.o $(SRCDIR)Game.o $(SRCDIR)Globals.o $(SRCDIR)Board.o $(LIBS)
+	$(ARMDIR)/bin/arm-gph-linux-gnueabi-strip $(TARGET)
+clean:
+	rm $(SRCDIR)*.o 
+	rm $(TARGET)
